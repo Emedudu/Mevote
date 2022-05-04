@@ -6,6 +6,7 @@ contract Booth{
     // contestant struct
     struct Contestant{
         string name;
+        string party;
         uint voteCount;
         address adress;
     }
@@ -20,14 +21,23 @@ contract Booth{
     mapping (uint=>Contestant) contestant;
     // map voterId to voter
     mapping (address=>Voter) voter;
+    // Events
+    event ContestantAdded(string name, string party,uint id);
+    event Voted(string name, string party);
+    event Registered(address voterAddress);
+    // constructor
+    // constructor(){};
     // add contestant
-    function addContestant(string memory name)public{
+    function addContestant(string memory name, string memory party)public{
         candidateId++;
         contestant[candidateId]=Contestant({
             name:name,
+            party:party,
             voteCount:0,
             adress:msg.sender
         });
+        contestants.push(contestant[candidateId]);
+        emit ContestantAdded(name,party,candidateId);
     }
     // vote
     function vote(uint id)public{
@@ -36,6 +46,7 @@ contract Booth{
         require(!voter[msg.sender].voted,"voter has already voted");
         contestant[id].voteCount+=1;
         voter[msg.sender].voted=true;
+        emit Voted(contestant[id].name,contestant[id].party);
     }
     // register voter
     function registerVoter()public{
@@ -46,6 +57,6 @@ contract Booth{
             voted:false,
             exists:true
         });
-
+        emit Registered(msg.sender);
     }
 }
