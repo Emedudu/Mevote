@@ -18,9 +18,9 @@ contract Booth{
     // array of contestants
     Contestant[] contestants;
     // map contestant id to contestant struct
-    mapping (uint=>Contestant) contestant;
+    mapping (uint=>Contestant) public contestant;
     // map voterId to voter
-    mapping (address=>Voter) voter;
+    mapping (address=>Voter) public voter;
     // Events
     event ContestantAdded(string name, string party,uint id);
     event Voted(string name, string party);

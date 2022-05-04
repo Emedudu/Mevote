@@ -12,7 +12,7 @@ contract('Pooling Booth',(accounts)=>{
         booth = await Booth.deployed()
     })
     describe('Registered candidate',()=>{
-        it('should register candidate successfully',()=>{
+        it('should register candidate successfully',async()=>{
             const result1 = await booth.addContestant('Mohammadu Buhari','APC',{from:accounts[0]})
             let id1 = await booth.candidateId()
             assert.equal(id1,1)
@@ -27,7 +27,7 @@ contract('Pooling Booth',(accounts)=>{
         })
     })
     describe('Register voter',()=>{
-        it("should register voter successfully",()=>{
+        it("should register voter successfully",async()=>{
             const result=await booth.registerVoter({from:accounts[6]})
             assert.equal(result.logs[0].args.voterAddress,accounts[6])
             const result1=await booth.registerVoter({from:accounts[7]})
@@ -38,21 +38,21 @@ contract('Pooling Booth',(accounts)=>{
             assert.equal(result3.logs[0].args.voterAddress,accounts[9])
             await expect(
                 booth.registerVoter({from:accounts[6]})
-                ).to.be.revertedWith('voter already exists')
+                ).to.be.rejectedWith('voter already exists')
         })
     })
     describe('vote',()=>{
-        it('shouldmake eligible voters to vote successfully',()=>{
+        it('should make eligible voters to vote successfully',async()=>{
             const result=await booth.vote(1,{from:accounts[6]})
             await expect(
                 booth.vote(2,{from:accounts[6]})
-            ).to.be.revertedWith('voter has already voted')
+            ).to.be.rejectedWith('voter has already voted')
             await expect(
                 booth.vote(1,{from:accounts[6]})
-            ).to.be.revertedWith('voter has already voted')
+            ).to.be.rejectedWith('voter has already voted')
             await expect(
                 booth.vote(2,{from:accounts[10]})
-            ).to.be.revertedWith('voter does not exist')
+            ).to.be.rejectedWith('voter does not exist')
             const result2=await booth.vote(2,{from:accounts[7]})
             const result3=await booth.vote(2,{from:accounts[8]})
             const result4=await booth.vote(2,{from:accounts[9]})
