@@ -25,6 +25,7 @@ contract Booth{
     event ContestantAdded(string name, string party,uint id);
     event Voted(string name, string party);
     event Registered(address voterAddress);
+    event VoterState(bool voted,bool exists);
     // constructor
     // constructor(){};
     // add contestant
@@ -58,5 +59,8 @@ contract Booth{
             exists:true
         });
         emit Registered(msg.sender);
+    }
+    function getVotedState()public{
+        emit VoterState(voter[msg.sender].voted, voter[msg.sender].exists);
     }
 }

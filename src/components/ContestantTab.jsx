@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const ContestantTab=({account, contract})=>{
+const ContestantTab=({account, contracts})=>{
     const [name,setName]=useState('')
     const [party,setParty]=useState('')
-    const addContestant=()=>{
-        contract.methods.addContestant(name.toUpperCase(),party.toUpperCase()).send({from:account})
+    const addContestant=async()=>{
+        await contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase()).send({from:account})
     }
+    useEffect(()=>{
+        contracts!==''&&addContestant()
+    },[contracts])
     return(
         <div className='container-fluid'>
             Contestant

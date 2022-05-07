@@ -7,8 +7,8 @@ import ContestantTab from './ContestantTab';
 import VoterTab from './VoterTab';
 
 const App=()=> {
+  const [contracts,setContracts]=useState('')
   const [accounts,setAccounts]=useState('')
-  const [contract,setContract]=useState('')
   const [voteTab,setVoteTab]=useState(true)
   const loadBlockChainData=async()=>{
     if(typeof window.ethereum!=='undefined'){
@@ -23,9 +23,10 @@ const App=()=> {
         window.alert('Please login with metamask')
       }
       try{
-        const booth=new web3.eth.Contract(Booth.abi,Booth.networks[netId].address);
-        setContract(booth);
-        console.log(booth);
+        let contract=await new web3.eth.Contract(Booth.abi,Booth.networks[netId].address);
+        setContracts(contract)
+        console.log(contract)
+        // console.log(contract);
       }catch(err){
         window.alert("Unable to load Contracts")
       }
@@ -43,7 +44,7 @@ const App=()=> {
   },[])
   return (
     <div className='container-fluid border border-primary'>
-      {voteTab?<VoterTab account={accounts[0]} contract={contract}/>:<ContestantTab account={accounts[0]} contract={contract}/>}
+      {voteTab?<VoterTab account={accounts[0]} contracts={contracts}/>:<ContestantTab account={accounts[0]} contracts={contracts}/>}
       <button onClick={setTab} type="button" className="btn btn-primary">{voteTab?'ADD CONTESTANT':'VOTE'}</button>
     </div>
   );
