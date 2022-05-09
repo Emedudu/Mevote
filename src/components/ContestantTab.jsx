@@ -4,11 +4,15 @@ const ContestantTab=({account, contracts})=>{
     const [name,setName]=useState('')
     const [party,setParty]=useState('')
     const addContestant=async()=>{
-        await contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase()).send({from:account})
+        try{
+            contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase()).send({from:account,gas:3000000})
+            contracts.events.ContestantAdded({})
+                .on('data',event=>console.log(event.returnValues.id.toString()));
+        }catch(err){
+            console.log(err)
+        }
+
     }
-    useEffect(()=>{
-        contracts!==''&&addContestant()
-    },[contracts])
     return(
         <div className='container-fluid'>
             Contestant
@@ -22,7 +26,7 @@ const ContestantTab=({account, contracts})=>{
             className="form-control" 
             onChange={(e)=>setParty(e.target.value)} 
             placeholder="PARTY"/>
-            <button onClick={addContestant} type="button" className="btn btn-secondary">ADD</button>
+            <button onClick={()=>contracts!==''&&addContestant()} type="button" className="btn btn-secondary">ADD</button>
         </div>
     )
 }

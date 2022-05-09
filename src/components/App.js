@@ -12,7 +12,11 @@ const App=()=> {
   const [voteTab,setVoteTab]=useState(true)
   const loadBlockChainData=async()=>{
     if(typeof window.ethereum!=='undefined'){
-      const web3=new Web3(window.ethereum);
+      let web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:7545'))
+      // const url = "wss://eth-rinkeby.alchemyapi.io/v2/1BRnFkiLixmFti8qJLIOEi8X3Ep4inUf";
+
+      // Using web3js
+      // const web3 = new Web3(url);
       const netId=await web3.eth.net.getId();
       const accounts=await web3.eth.getAccounts();
       if(typeof accounts[0] !=='undefined'){

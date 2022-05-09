@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract Booth{
@@ -16,7 +17,7 @@ contract Booth{
         bool exists;
     }
     // array of contestants
-    Contestant[] contestants;
+    Contestant[] public contestants;
     // map contestant id to contestant struct
     mapping (uint=>Contestant) public contestant;
     // map voterId to voter

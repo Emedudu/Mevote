@@ -1,24 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const VoterTab=({account,contracts})=>{
-    let exists,voted
-    const getVoterState=async()=>{
-        const voter=await contracts.methods.getVotedState().call({from:account})
-        console.log(voter)
+    const [id,setId]=useState(0)
+    const vote=async(id)=>{
+        try{
+            contracts.methods.vote(id).send({from:account})
+            contracts.events.Voted({})
+                .on('data',event=>console.log(event.returnValues));
+        }catch(err){           
+            console.log(err)
+        }
     }
-    useEffect(()=>{
-        contracts!==''&&getVoterState()
-        contracts.events.VoterState({})
-            .on('data', async function(event){
-                console.log(event.returnValues);
-                // Do something here
-            })
-            .on('error', console.error);
-    },[contracts])
+    const registerVoter=async()=>{
+        try{
+            contracts.methods.registerVoter().send({from:account})
+            contracts.events.Registered({})
+                .on('data',event=>console.log(event.returnValues));
+        }catch(err){
+            console.log(err)
+        }
+    }
+    
     return(
         <div className='container-fluid'>
-        Voter
-        {`${exists},${voted}`}
+            <input 
+            type="number" 
+            className="form-control" 
+            onChange={(e)=>setId(e.target.value)} 
+            placeholder='Enter ContestantID'/>
+            <button onClick={()=>contracts!==""&&vote(id)} type="button" className="btn btn-secondary">VOTE</button>
+            <button onClick={()=>contracts!==""&&registerVoter()} type="button" className="btn btn-secondary">Register as voter</button>
         </div>
     )
 }
