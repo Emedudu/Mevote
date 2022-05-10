@@ -13,10 +13,11 @@ const App=()=> {
   const loadBlockChainData=async()=>{
     if(typeof window.ethereum!=='undefined'){
       let web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:7545'))
-      // const url = "wss://eth-rinkeby.alchemyapi.io/v2/1BRnFkiLixmFti8qJLIOEi8X3Ep4inUf";
+      // const url = `wss://eth-rinkeby.alchemyapi.io/v2/${tokenKey}`;
 
       // Using web3js
       // const web3 = new Web3(url);
+      window.ethereum.enable();
       const netId=await web3.eth.net.getId();
       const accounts=await web3.eth.getAccounts();
       if(typeof accounts[0] !=='undefined'){
@@ -48,7 +49,7 @@ const App=()=> {
   },[])
   return (
     <div className='container-fluid border border-primary'>
-      {voteTab?<VoterTab account={accounts[0]} contracts={contracts}/>:<ContestantTab account={accounts[0]} contracts={contracts}/>}
+      {voteTab?<VoterTab account={accounts[1]} contracts={contracts}/>:<ContestantTab account={accounts[0]} contracts={contracts}/>}
       <button onClick={setTab} type="button" className="btn btn-primary">{voteTab?'ADD CONTESTANT':'VOTE'}</button>
     </div>
   );

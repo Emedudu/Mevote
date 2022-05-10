@@ -4,13 +4,13 @@ const ContestantTab=({account, contracts})=>{
     const [name,setName]=useState('')
     const [party,setParty]=useState('')
     const addContestant=async()=>{
-        try{
-            contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase()).send({from:account,gas:3000000})
-            contracts.events.ContestantAdded({})
-                .on('data',event=>console.log(event.returnValues.id.toString()));
-        }catch(err){
-            console.log(err)
-        }
+        
+        contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase())
+            .send({from:account,gas:3000000})
+            .catch((err)=>console.log(err))
+
+        contracts.events.ContestantAdded({})
+            .on('data',event=>console.log(event.returnValues.id.toString()));
 
     }
     return(

@@ -2,24 +2,23 @@ import React, { useEffect, useState } from "react";
 
 const VoterTab=({account,contracts})=>{
     const [id,setId]=useState(0)
-    const vote=async(id)=>{
-        try{
-            contracts.methods.vote(id).send({from:account})
-            contracts.events.Voted({})
-                .on('data',event=>console.log(event.returnValues));
-        }catch(err){           
-            console.log(err)
-        }
+    const vote=(id)=>{
+        contracts.methods.vote(id)
+            .send({from:account})
+            .catch((err)=>console.log(err))
+       
+        contracts.events.Voted({})
+            .on('data',event=>console.log(event.returnValues));
     }
-    const registerVoter=async()=>{
-        try{
-            contracts.methods.registerVoter().send({from:account})
-            contracts.events.Registered({})
-                .on('data',event=>console.log(event.returnValues));
-        }catch(err){
-            console.log(err)
-        }
+    const registerVoter=()=>{
+        contracts.methods.registerVoter()
+            .send({from:account})
+            .catch((err)=>console.log(err))
+
+        contracts.events.Registered({})
+            .on('data',event=>console.log(event.returnValues));
     }
+        
     
     return(
         <div className='container-fluid'>
