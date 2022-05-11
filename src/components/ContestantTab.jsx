@@ -8,7 +8,8 @@ const ContestantTab=({account, contracts})=>{
         contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase())
             .send({from:account,gas:3000000})
             .catch((err)=>console.log(err))
-
+        setName('')
+        setParty('')
         contracts.events.ContestantAdded({})
             .on('data',event=>console.log(event.returnValues.id.toString()));
 
@@ -20,12 +21,14 @@ const ContestantTab=({account, contracts})=>{
             type="text" 
             className="form-control" 
             onChange={(e)=>setName(e.target.value)} 
-            placeholder="NAME"/>
+            placeholder="NAME"
+            value={name}/>
             <input 
             type="text" 
             className="form-control" 
             onChange={(e)=>setParty(e.target.value)} 
-            placeholder="PARTY"/>
+            placeholder="PARTY"
+            value={party}/>
             <button onClick={()=>contracts!==''&&addContestant()} type="button" className="btn btn-primary align-self-center">ADD</button>
         </div>
     )

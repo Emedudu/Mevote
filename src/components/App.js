@@ -67,7 +67,7 @@ const App=()=> {
       </nav>
       <div className='h-100'>
         {
-          (voteTab==1)&&<VoterTab account={accounts[0]} contracts={contracts}/>
+          (voteTab==1)&&<VoterTab account={accounts[1]} contracts={contracts}/>
         }
         {
           (voteTab==2)&&<ContestantTab account={accounts[0]} contracts={contracts}/>

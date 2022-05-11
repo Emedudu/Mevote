@@ -39,7 +39,7 @@ const VoterTab=({account,contracts})=>{
             onChange={(e)=>setId(e.target.value)} 
             placeholder='Enter ContestantID'
             disabled={voted}/>
-            <button onClick={()=>contracts!==""&&vote(id)} type="button" className={`btn btn-primary align-self-center`} disabled={voted}>VOTE</button>
+            <button onClick={()=>contracts!==""&&vote(id)} type="button" className={`btn btn-primary align-self-center`} disabled={voted||!exists}>VOTE</button>
             
         </div>
     )
