@@ -14,8 +14,8 @@ const ContestantTab=({account, contracts})=>{
 
     }
     return(
-        <div className='container-fluid'>
-            Contestant
+        <div className='container-fluid d-flex flex-column justify-content-around h-100'>
+            
             <input 
             type="text" 
             className="form-control" 
@@ -26,7 +26,7 @@ const ContestantTab=({account, contracts})=>{
             className="form-control" 
             onChange={(e)=>setParty(e.target.value)} 
             placeholder="PARTY"/>
-            <button onClick={()=>contracts!==''&&addContestant()} type="button" className="btn btn-secondary">ADD</button>
+            <button onClick={()=>contracts!==''&&addContestant()} type="button" className="btn btn-primary align-self-center">ADD</button>
         </div>
     )
 }

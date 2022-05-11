@@ -24,9 +24,10 @@ contract Booth{
     mapping (address=>Voter) public voter;
     // Events
     event ContestantAdded(string name, string party,uint id);
-    event Voted(string name, string party);
+    event Voted(string name, string party, uint votes);
     event Registered(address voterAddress);
     event VoterState(bool voted,bool exists);
+    event ContestantDetails(string name, string party, uint votes, address adress, uint id);
     // constructor
     // constructor(){};
     // add contestant
@@ -48,7 +49,7 @@ contract Booth{
         require(!voter[msg.sender].voted,"voter has already voted");
         contestant[id].voteCount+=1;
         voter[msg.sender].voted=true;
-        emit Voted(contestant[id].name,contestant[id].party);
+        emit Voted(contestant[id].name,contestant[id].party,contestant[id].voteCount);
     }
     // register voter
     function registerVoter()public{
@@ -63,5 +64,8 @@ contract Booth{
     }
     function getVotedState()public{
         emit VoterState(voter[msg.sender].voted, voter[msg.sender].exists);
+    }
+    function getVoteeDetails(uint id)public{
+        emit ContestantDetails(contestant[id].name,contestant[id].party,contestant[id].voteCount,contestant[id].adress,id);
     }
 }

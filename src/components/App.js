@@ -4,12 +4,13 @@ import Booth from '../abis/Booth.json';
 import logo from '../logo.png';
 import './App.css';
 import ContestantTab from './ContestantTab';
+import VoteCount from './VoteCount';
 import VoterTab from './VoterTab';
 
 const App=()=> {
   const [contracts,setContracts]=useState('')
   const [accounts,setAccounts]=useState('')
-  const [voteTab,setVoteTab]=useState(true)
+  const [voteTab,setVoteTab]=useState(1)
   const loadBlockChainData=async()=>{
     if(typeof window.ethereum!=='undefined'){
       let web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:7545'))
@@ -42,16 +43,42 @@ const App=()=> {
   }
   const setTab=(e)=>{
     e.preventDefault();
-    setVoteTab(!voteTab)
+    setVoteTab(1)
+  }
+  const setContestantTab=(e)=>{
+    e.preventDefault();
+    setVoteTab(2)
+  }
+  const setVoteCountTab=(e)=>{
+    e.preventDefault();
+    setVoteTab(3)
   }
   useEffect(()=>{
     loadBlockChainData()
   },[])
   return (
-    <div className='container-fluid border border-primary'>
-      {voteTab?<VoterTab account={accounts[1]} contracts={contracts}/>:<ContestantTab account={accounts[0]} contracts={contracts}/>}
-      <button onClick={setTab} type="button" className="btn btn-primary">{voteTab?'ADD CONTESTANT':'VOTE'}</button>
+    <div className='row full-height'>
+
+    <div className='container col-md-8 d-flex flex-column justify-content-between shadow-lg mb-5 bg-white rounded h-50'>
+      <nav className='navbar'>
+        <button onClick={setTab} type="button" className={`btn ${voteTab==1&&'text-primary'}`}>VOTE</button>
+        <button onClick={setContestantTab} type="button" className={`btn ${voteTab==2&&'text-primary'}`}>ADD CONTESTANT</button>
+        <button onClick={setVoteCountTab} type="button" className={`btn ${voteTab==3&&'text-primary'}`}>COUNT VOTES</button>
+      </nav>
+      <div className='h-100'>
+        {
+          (voteTab==1)&&<VoterTab account={accounts[0]} contracts={contracts}/>
+        }
+        {
+          (voteTab==2)&&<ContestantTab account={accounts[0]} contracts={contracts}/>
+        }
+        {
+          (voteTab==3)&&<VoteCount account={accounts[0]} contracts={contracts}/>
+        }
+      </div>
     </div>
+    </div>
+    
   );
   
 }
