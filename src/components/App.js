@@ -60,14 +60,14 @@ const App=()=> {
     <div className='row full-height'>
 
     <div className='container col-md-8 d-flex flex-column justify-content-between shadow-lg mb-5 bg-white rounded h-50'>
-      <nav className='navbar'>
-        <button onClick={setTab} type="button" className={`btn ${voteTab==1&&'text-primary'}`}>VOTE</button>
-        <button onClick={setContestantTab} type="button" className={`btn ${voteTab==2&&'text-primary'}`}>ADD CONTESTANT</button>
-        <button onClick={setVoteCountTab} type="button" className={`btn ${voteTab==3&&'text-primary'}`}>COUNT VOTES</button>
+      <nav className='navbar row'>
+        <button onClick={setTab} type="button" className={`btn col-4 ${voteTab==1&&'text-primary'}`}>VOTE</button>
+        <button onClick={setContestantTab} type="button" className={`btn col-4 ${voteTab==2&&'text-primary'}`}>ADD CONTESTANT</button>
+        <button onClick={setVoteCountTab} type="button" className={`btn col-4 ${voteTab==3&&'text-primary'}`}>COUNT VOTES</button>
       </nav>
       <div className='h-100'>
         {
-          (voteTab==1)&&<VoterTab account={accounts[1]} contracts={contracts}/>
+          (voteTab==1)&&<VoterTab account={accounts[2]} contracts={contracts}/>
         }
         {
           (voteTab==2)&&<ContestantTab account={accounts[0]} contracts={contracts}/>
