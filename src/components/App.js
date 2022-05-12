@@ -11,9 +11,10 @@ const App=()=> {
   const [contracts,setContracts]=useState('')
   const [accounts,setAccounts]=useState('')
   const [voteTab,setVoteTab]=useState(1)
+
   const loadBlockChainData=async()=>{
     if(typeof window.ethereum!=='undefined'){
-      let web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:7545'))
+      const web3 = await new Web3(new Web3.providers.WebsocketProvider('ws://localhost:7545'))
       // const url = `wss://eth-rinkeby.alchemyapi.io/v2/${tokenKey}`;
 
       // Using web3js
@@ -36,7 +37,6 @@ const App=()=> {
       }catch(err){
         window.alert("Unable to load Contracts")
       }
-
     }else{
       window.alert('Please Install Metamask')
     }
