@@ -27,7 +27,7 @@ contract Booth{
     event Voted(string name, string party, uint votes);
     event Registered(address voterAddress);
     event VoterState(bool voted,bool exists);
-    event ContestantDetails(string name, string party, uint votes, address adress, uint id, string encryption);
+    event ContestantDetails(string name, string party, uint votes, address adress, uint id, string indexed encryption);
     // constructor
     // constructor(){};
     // add contestant

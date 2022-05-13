@@ -30,9 +30,9 @@ const VoteCount=({account,contracts})=>{
     const encrypt=()=>account.toString()+Date.now().toString()
     const getEvents=()=>{
         contracts!==''&&contracts.getPastEvents('ContestantDetails',{
-            filter:{encryption:hash},
-            fromBlock:0
-        },(err,events)=>{console.log(events.map((elem)=>elem.returnValues.encryption),hash)})
+            // filter:{encryption:hash},
+            fromBlock:1
+        },(err,events)=>{console.log(events.map((elem)=>elem.returnValues),hash)})
     } 
     return(
         <div className='container-fluid d-flex flex-column justify-content-around h-100'>
@@ -60,7 +60,7 @@ const VoteCount=({account,contracts})=>{
             placeholder='Enter ContestantID'
             // value={val}
             />
-            <button onClick={(e)=>{contracts!=''&&count(e);setTimeout(getEvents,cleanUp(ids).length*1000)}} type="button" className={`btn btn-primary align-self-center`}>COUNT</button>
+            <button onClick={(e)=>{contracts!=''&&count(e);getEvents()}} type="button" className={`btn btn-primary align-self-center`}>COUNT</button>
         </div>
     )
 }
