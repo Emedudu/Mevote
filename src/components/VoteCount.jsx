@@ -13,7 +13,9 @@ const VoteCount=({account,contracts})=>{
             contracts.methods.getVoteeDetails(cleanIds[i],hash).send({from:account})
         }
     }
-    const cleanUp=(arr)=>{
+    const cleanUp=(arra)=>{
+        const set=new Set(arra)
+        const arr=[...set]
         return arr.filter(
             (elem)=>elem!=='').map(
                 (elem)=>parseInt(elem))
@@ -28,12 +30,31 @@ const VoteCount=({account,contracts})=>{
         }
     }
     const encrypt=()=>account.toString()+Date.now().toString()
-    const getEvents=()=>{
-        contracts!==''&&contracts.getPastEvents('ContestantDetails',{
-            // filter:{encryption:hash},
-            fromBlock:1
-        },(err,events)=>{console.log(events.map((elem)=>elem.returnValues),hash)})
-    } 
+    // const getEvents=()=>{
+    //     contracts!==''&&contracts.getPastEvents('ContestantDetails',{
+    //         filter:{name:'YEMI'},
+    //         fromBlock:1,
+    //         toBlock:'latest'
+    //     },(err,events)=>{
+    //         if(!err){
+    //             console.log(events,hash)
+    //         }else{
+    //             console.log(err)
+    //         }
+    //     })
+    // } 
+    let events=[]
+    const getEvents=new Promise((resolve,reject)=>{
+        try{
+            contracts!==''&&contracts.events.ContestantDetails({})
+                .on('data',event=>{
+                    events.push(event)
+                    events.length==cleanUp(ids)&&resolve(events)
+                })
+        }catch(err){
+            reject('Error Occurred')
+        }
+    })
     return(
         <div className='container-fluid d-flex flex-column justify-content-around h-100'>
             <p>
@@ -60,7 +81,7 @@ const VoteCount=({account,contracts})=>{
             placeholder='Enter ContestantID'
             // value={val}
             />
-            <button onClick={(e)=>{contracts!=''&&count(e);getEvents()}} type="button" className={`btn btn-primary align-self-center`}>COUNT</button>
+            <button onClick={(e)=>{contracts!=''&&count(e);getEvents.then((res,rej)=>console.log(res))}} type="button" className={`btn btn-primary align-self-center`}>COUNT</button>
         </div>
     )
 }

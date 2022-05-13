@@ -70,10 +70,10 @@ const App=()=> {
           (voteTab==1)&&<VoterTab account={accounts[2]} contracts={contracts}/>
         }
         {
-          (voteTab==2)&&<ContestantTab account={accounts[0]} contracts={contracts}/>
+          (voteTab==2)&&<ContestantTab account={accounts[1]} contracts={contracts}/>
         }
         {
-          (voteTab==3)&&<VoteCount account={accounts[0]} contracts={contracts}/>
+          (voteTab==3)&&<VoteCount account={accounts[1]} contracts={contracts}/>
         }
       </div>
     </div>

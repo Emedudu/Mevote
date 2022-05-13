@@ -27,7 +27,7 @@ contract Booth{
     event Voted(string name, string party, uint votes);
     event Registered(address voterAddress);
     event VoterState(bool voted,bool exists);
-    event ContestantDetails(string name, string party, uint votes, address adress, uint id, string indexed encryption);
+    event ContestantDetails(string indexed encryption, string indexed name, string party, uint votes, address adress, uint id);
     // constructor
     // constructor(){};
     // add contestant
@@ -66,6 +66,6 @@ contract Booth{
         emit VoterState(voter[msg.sender].voted, voter[msg.sender].exists);
     }
     function getVoteeDetails(uint id,string memory hashes)public{
-        emit ContestantDetails(contestant[id].name,contestant[id].party,contestant[id].voteCount,contestant[id].adress,id,hashes);
+        emit ContestantDetails(hashes,contestant[id].name,contestant[id].party,contestant[id].voteCount,contestant[id].adress,id);
     }
 }
