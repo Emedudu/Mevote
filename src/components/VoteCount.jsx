@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Card from "./Card";
 
 const VoteCount=({account,contracts})=>{
@@ -25,63 +25,61 @@ const VoteCount=({account,contracts})=>{
             e.preventDefault();
             let val=e.target.value
             setIds([...ids,val])
-            // setVal(0)
             e.target.value=''
         }
     }
     const encrypt=()=>account.toString()+Date.now().toString()
-    // const getEvents=()=>{
-    //     contracts!==''&&contracts.getPastEvents('ContestantDetails',{
-    //         filter:{name:'YEMI'},
-    //         fromBlock:1,
-    //         toBlock:'latest'
-    //     },(err,events)=>{
-    //         if(!err){
-    //             console.log(events,hash)
-    //         }else{
-    //             console.log(err)
-    //         }
-    //     })
-    // } 
-    let events=[]
+    
     const getEvents=new Promise((resolve,reject)=>{
+        let events=[]
         try{
-            contracts!==''&&contracts.events.ContestantDetails({})
+            contracts!==''&&contracts.events.ContestantDetails({filter:{encryption:hash}})
                 .on('data',event=>{
                     events.push(event)
-                    events.length==cleanUp(ids)&&resolve(events)
+                    events.length==cleanUp(ids).length&&resolve(events)
                 })
         }catch(err){
             reject('Error Occurred')
         }
     })
+    const assignValue=()=>{
+        getEvents.then(
+            (res)=>{
+                setContestants(res.map((elem)=>elem.returnValues))
+            },
+            (rej)=>{
+                console.log(rej)
+            })
+    }
+    const sort=()=>{
+        let sortedContestants=contestants.slice(0).sort((a,b)=>parseInt(b.votes.toString())-parseInt(a.votes.toString()))
+        setContestants(sortedContestants)
+    }
     return(
         <div className='container-fluid d-flex flex-column justify-content-around h-100'>
             <p>
                 Be Informed that counting the votes will take time and eth.
             </p>
-            <div className='overflow-auto'>
+            <button onClick={sort} type="button" className={`btn btn-secondary align-self-center`} disabled={!contestants.length}>SORT</button>
+            <div className='overflow-auto mh-50'style={{'height':'200px'}}>
                 {contestants.map((obj,i)=>{
-                    return i
-                    // return <Card
-                    // key={i} 
-                    // name={obj.name}
-                    // party={obj.party}
-                    // votes={obj.votes.toString()}
-                    // address={obj.adress}
-                    // id={obj.id.toString()}/>
+                    return <Card
+                    key={i} 
+                    name={obj.name}
+                    party={obj.party}
+                    votes={obj.votes.toString()}
+                    address={obj.adress}
+                    id={obj.id.toString()}/>
                     })
                     }
             </div>
             <input 
             type="number" 
             className="form-control"
-            // onChange={(e)=>{setVal(e.target.value)}} 
             onKeyPress={appendNumber}
             placeholder='Enter ContestantID'
-            // value={val}
             />
-            <button onClick={(e)=>{contracts!=''&&count(e);getEvents.then((res,rej)=>console.log(res))}} type="button" className={`btn btn-primary align-self-center`}>COUNT</button>
+            <button onClick={(e)=>{contracts!=''&&count(e);assignValue()}} type="button" className={`btn btn-primary align-self-center`} disabled={!ids.length}>COUNT</button>
         </div>
     )
 }
