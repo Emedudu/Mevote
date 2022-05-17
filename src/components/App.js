@@ -5,6 +5,7 @@ import './App.css';
 import ContestantTab from './ContestantTab';
 import VoteCount from './VoteCount';
 import VoterTab from './VoterTab';
+import {createAlchemyWeb3} from "@alch/alchemy-web3";
 
 const App=()=> {
   const [contracts,setContracts]=useState('')
@@ -14,13 +15,16 @@ const App=()=> {
   const loadBlockChainData=async()=>{
     if(typeof window.ethereum!=='undefined'){
       // const web3 = await new Web3(new Web3.providers.WebsocketProvider('ws://localhost:7545'))
-      const url = `wss://eth-rinkeby.alchemyapi.io/v2/1BRnFkiLixmFti8qJLIOEi8X3Ep4inUf`;
+      const url = `wss://rinkeby.infura.io/ws/v3/5a5069b4ad6f4c38afe55f29fe40b91e`;
 
+// Using WebSockets
+      const web3 = createAlchemyWeb3(url);
       // Using web3js
-      const web3 = new Web3(url);
-      window.ethereum.enable();
+      // const web3 = new Web3(new Web3.providers.WebsocketProvider(url));
+      await window.ethereum.enable();
       const netId=await web3.eth.net.getId();
       const accounts=await web3.eth.getAccounts();
+      console.log(accounts)
       if(typeof accounts[0] !=='undefined'){
         setAccounts(accounts);
         // console.log(accounts);

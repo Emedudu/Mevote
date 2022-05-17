@@ -20,26 +20,26 @@ const VoterTab=({account,contracts})=>{
         contracts.events.Registered({})
             .on('data',event=>console.log(event.returnValues));
     }
-    contracts!==''&&contracts.events.VoterState({})
+    contracts&&contracts.events.VoterState({})
         .on('data',event=>{
             setExists(event.returnValues.exists)
             setVoted(event.returnValues.voted)
         }
     )
     useEffect(()=>{
-        contracts!==''&&contracts.methods.getVotedState().send({from:account})
+        contracts&&account&&contracts.methods.getVotedState().send({from:account})
     },[registerVoter,vote])   
 
     return(
         <div className='container-fluid d-flex flex-column justify-content-around h-100'>
-            <button onClick={()=>contracts!==""&&registerVoter()} type="button" className={`btn text-primary align-self-end`} disabled={exists}>Register as voter</button>
+            <button onClick={()=>contracts&&account&&registerVoter()} type="button" className={`btn text-primary align-self-end`} disabled={exists}>Register as voter</button>
             <input 
             type="number" 
             className="form-control" 
             onChange={(e)=>setId(e.target.value)} 
             placeholder='Enter ContestantID'
             disabled={voted}/>
-            <button onClick={()=>contracts!==""&&vote(id)} type="button" className={`btn btn-primary align-self-center`} disabled={voted||!exists}>VOTE</button>
+            <button onClick={()=>contracts&&account&&vote(id)} type="button" className={`btn btn-primary align-self-center`} disabled={voted||!exists}>VOTE</button>
             
         </div>
     )

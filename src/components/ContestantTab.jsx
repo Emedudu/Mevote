@@ -4,12 +4,12 @@ const ContestantTab=({account, contracts})=>{
     const [name,setName]=useState('')
     const [party,setParty]=useState('')
     const addContestant=async()=>{        
-        contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase())
+        contracts&&account&&contracts.methods.addContestant(name.toUpperCase(),party.toUpperCase())
             .send({from:account,gas:3000000})
             .catch((err)=>console.log(err))
         setName('')
         setParty('')
-        contracts.events.ContestantAdded({})
+        contracts&&contracts.events.ContestantAdded({})
             .on('data',event=>window.alert(event.returnValues.id.toString()));
     }
     return(
@@ -27,7 +27,7 @@ const ContestantTab=({account, contracts})=>{
             onChange={(e)=>setParty(e.target.value)} 
             placeholder="PARTY"
             value={party}/>
-            <button onClick={()=>contracts!==''&&addContestant()} type="button" className="btn btn-primary align-self-center">ADD</button>
+            <button onClick={()=>contracts&&addContestant()} type="button" className="btn btn-primary align-self-center">ADD</button>
         </div>
     )
 }

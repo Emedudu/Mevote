@@ -1,9 +1,11 @@
 {
-  "name": "eth-marketplace",
+  "name": "Mevote",
   "version": "0.1.0",
-  "description": "An Ethereum Marketplace",
-  "author": "gregory@dappuniversity.com",
+  "homepage": "https://emedudu.github.io/Mevote",
+  "description": "A Decentralized voting application",
+  "author": "Emeduduna Akerejola",
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.2",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-es2015": "6.24.1",
@@ -24,6 +26,8 @@
     "web3": "^1.7.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -37,5 +41,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
+  }
 }

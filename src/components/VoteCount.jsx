@@ -33,7 +33,7 @@ const VoteCount=({account,contracts})=>{
     const getEvents=new Promise((resolve,reject)=>{
         let events=[]
         try{
-            contracts!==''&&contracts.events.ContestantDetails({filter:{encryption:hash}})
+            contracts&&contracts.events.ContestantDetails({filter:{encryption:hash}})
                 .on('data',event=>{
                     events.push(event)
                     events.length==cleanUp(ids).length&&resolve(events)
@@ -79,7 +79,7 @@ const VoteCount=({account,contracts})=>{
             onKeyPress={appendNumber}
             placeholder='Enter ContestantID'
             />
-            <button onClick={(e)=>{contracts!=''&&count(e);assignValue()}} type="button" className={`btn btn-primary align-self-center`} disabled={!ids.length}>COUNT</button>
+            <button onClick={(e)=>{contracts&&account&&count(e);assignValue()}} type="button" className={`btn btn-primary align-self-center`} disabled={!ids.length}>COUNT</button>
         </div>
     )
 }
